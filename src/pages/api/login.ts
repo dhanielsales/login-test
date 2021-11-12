@@ -38,7 +38,7 @@ const Login: Handler = async (request, response) => {
       return response.status(500).send({
         error: {
           message: 'Internal server error',
-          details: err?.message,
+          // details: err?.message,
         },
       });
     }
