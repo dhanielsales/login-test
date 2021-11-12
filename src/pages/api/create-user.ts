@@ -10,9 +10,13 @@ const CreateUser: Handler = async (request, response) => {
     try {
       const { email, password, token } = request.body;
 
-      if (token !== SECRET_KEY) {
-        return response.status(401).end();
-      }
+      console.log('token', token);
+      console.log('SECRET_KEY', SECRET_KEY);
+      console.log(token !== SECRET_KEY);
+
+      // if (token !== SECRET_KEY) {
+      //   return response.status(401).end();
+      // }
 
       const mongoClient = request.db;
 
