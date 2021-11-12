@@ -1,5 +1,6 @@
 module.exports = {
   env: {
+    node: true,
     browser: true,
     es6: true,
     es2020: true,
@@ -38,6 +39,7 @@ module.exports = {
     },
   },
   rules: {
+    "require-atomic-updates": "off",
     'prettier/prettier': 'error',
     'simple-import-sort/sort': 'error',
     'react/react-in-jsx-scope': "off",
