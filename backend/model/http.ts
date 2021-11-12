@@ -1,8 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { Db } from './db';
+
 export interface Request extends NextApiRequest {
   db?: Db;
+  user?: { _id: string };
   method: Methods;
 }
 

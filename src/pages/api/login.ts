@@ -1,6 +1,8 @@
-import databaseConnection from '../../../serverless/middleware/databaseConnection';
-import { Handler } from '../../../serverless/model/http';
-import { compareHash } from '../../../serverless/utils/hashing';
+import databaseConnection from '../../../backend/middleware/databaseConnection';
+import { Handler } from '../../../backend/model/http';
+import { User } from '../../../backend/model/user';
+import { authenticationJwt } from '../../../backend/utils/auth';
+import { compareHash } from '../../../backend/utils/hashing';
 
 const MONGODB_DATABASE_NAME = process.env.MONGODB_DATABASE_NAME;
 
@@ -15,12 +17,19 @@ const Login: Handler = async (request, response) => {
 
       const userCollection = database.collection('users');
 
-      const user = await userCollection.findOne({ email });
+      const user = await userCollection.findOne<User>({ email });
 
       if (user) {
         const passwordVerification = await compareHash(password, user.password);
         if (passwordVerification) {
-          return response.status(200).send({ token: '123', user });
+          const token = authenticationJwt(user._id);
+          return response.status(200).send({
+            token,
+            user: {
+              id: user._id,
+              email: user.email,
+            },
+          });
         }
       }
 
@@ -29,10 +38,12 @@ const Login: Handler = async (request, response) => {
       return response.status(500).send({
         error: {
           message: 'Internal server error',
-          details: err?.message,
+          // details: err?.message,
         },
       });
     }
+  } else {
+    return response.status(404).end();
   }
 };
 

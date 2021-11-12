@@ -1,6 +1,6 @@
-import databaseConnection from '../../../serverless/middleware/databaseConnection';
-import { Handler } from '../../../serverless/model/http';
-import { createHash } from '../../../serverless/utils/hashing';
+import databaseConnection from '../../../backend/middleware/databaseConnection';
+import { Handler } from '../../../backend/model/http';
+import { createHash } from '../../../backend/utils/hashing';
 
 const SECRET_KEY = process.env.SECRET_KEY;
 const MONGODB_DATABASE_NAME = process.env.MONGODB_DATABASE_NAME;
@@ -29,10 +29,12 @@ const CreateUser: Handler = async (request, response) => {
       return response.status(500).send({
         error: {
           message: 'Internal server error',
-          details: err?.message,
+          // details: err?.message,
         },
       });
     }
+  } else {
+    return response.status(404).end();
   }
 };
 
