@@ -10,13 +10,9 @@ const CreateUser: Handler = async (request, response) => {
     try {
       const { email, password, token } = request.body;
 
-      console.log('token', token);
-      console.log('SECRET_KEY', SECRET_KEY);
-      console.log(token !== SECRET_KEY);
-
-      // if (token !== SECRET_KEY) {
-      //   return response.status(401).end();
-      // }
+      if (token !== SECRET_KEY) {
+        return response.status(401).end();
+      }
 
       const mongoClient = request.db;
 
@@ -28,7 +24,7 @@ const CreateUser: Handler = async (request, response) => {
 
       await userCollection.insertOne({ email, password: hashedPassword });
 
-      return response.status(200).send({ email, password, token, SECRET_KEY });
+      return response.status(201).end();
     } catch (err) {
       return response.status(500).send({
         error: {
