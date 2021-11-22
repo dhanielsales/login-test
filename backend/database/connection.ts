@@ -11,7 +11,7 @@ export const getDatabaseConnector = () => {
       throw new Error(`Failed to get configuration for env:${process.env.NODE_ENV}`);
     }
 
-    if (connection) {
+    if (connection !== null) {
       return connection;
     }
 
